@@ -9,6 +9,12 @@ A simple desktop app to track the Bitcoin price in USD, EUR and BRL.
 - "Refresh" and "Donate" buttons
 - "Info" tab with author and contribution links
 
+## Requirements
+- Debian-based system
+- Python 3
+- GTK 4 (gir1.2-gtk-4.0)
+- python3-requests and dependencies
+
 ## Installation
 
 1. Unzip the project files.
