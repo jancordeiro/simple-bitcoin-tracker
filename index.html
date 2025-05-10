@@ -1,11 +1,93 @@
-<html>
-  <head>
-    <title>Simple Bitcoin Tracker For Linux</title>
-    <meta charset="UTF-8">
-  </head>
-  <body>
-    <h2>Simple Bitcoin Tracker</h2>
-    <p>For Linux</p>
-    <h2>Website Under Development.</h2>
-  </body>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Simple Bitcoin Tracker</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #0d1117;
+      color: #c9d1d9;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 20px;
+    }
+
+    h1 {
+      color: #58a6ff;
+      font-size: 2.5rem;
+    }
+
+    p {
+      max-width: 700px;
+      text-align: center;
+      font-size: 1.1rem;
+      line-height: 1.6;
+      margin-bottom: 30px;
+    }
+
+    .buttons {
+      display: flex;
+      gap: 15px;
+      margin-top: 20px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 12px 24px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 6px;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .btn-download {
+      background-color: #238636;
+      color: #fff;
+    }
+
+    .btn-download:hover {
+      background-color: #2ea043;
+    }
+
+    .btn-github {
+      background-color: #161b22;
+      color: #58a6ff;
+      border: 1px solid #30363d;
+    }
+
+    .btn-github:hover {
+      background-color: #21262d;
+    }
+
+    footer {
+      margin-top: 60px;
+      font-size: 0.9rem;
+      color: #8b949e;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Simple Bitcoin Tracker</h1>
+  <p>
+    A lightweight GTK app for tracking Bitcoin prices in real time.
+    Built with Python and GTK, it provides a minimal and elegant interface with support for multiple currencies, automatic refresh, and a TradingView chart.
+  </p>
+
+  <div class="buttons">
+    <a class="btn btn-download" href="#" download>⬇ Download for Debian (.deb)</a>
+    <a class="btn btn-github" href="https://github.com/jancordeiro/simple-bitcoin-tracker" target="_blank">💻 View on GitHub</a>
+  </div>
+
+  <footer>
+    &copy; 2025 Jan Cordeiro — Simple Bitcoin Tracker
+  </footer>
+
+</body>
 </html>
