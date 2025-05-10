@@ -1,25 +1,29 @@
-# Simple Bitcoin Tracker
+# 🪙 Simple Bitcoin Tracker
 
-A simple desktop app to track the Bitcoin price in USD, EUR and BRL.
+**Simple Bitcoin Tracker** is a lightweight desktop application for Debian-based systems that displays real-time Bitcoin price data in USD, EUR, and BRL, along with market cap and daily, weekly, and monthly changes.
 
-## Features
-- Current price in 3 currencies
-- Market cap
-- 24h change
-- "Refresh" and "Donate" buttons
-- "Info" tab with author and contribution links
+Built with Python and GTK, it’s designed to be simple, clean, and efficient.
 
-## Requirements
-- Debian-based system
-- Python 3
-- GTK 4 (gir1.2-gtk-4.0)
-- python3-requests and dependencies
+---
 
-## Installation
+## 📦 Features
 
-1. Unzip the project files.
-2. Run the installation script:
+- Live Bitcoin price in USD, EUR, and BRL
+- Market capitalization
+- Price variation (24h, 7d, 30d)
+
+---
+
+## 🖥️ Screenshots
+
+Soon
+
+---
+
+## ⚙️ Requirements
+
+Before installing, make sure the following dependencies are installed:
 
 ```bash
-chmod +x install-simple-bitcoin-tracker.sh
-./install-simple-bitcoin-tracker.sh
+sudo apt update
+sudo apt install -y python3 python3-gi python3-requests gir1.2-gtk-4.0
