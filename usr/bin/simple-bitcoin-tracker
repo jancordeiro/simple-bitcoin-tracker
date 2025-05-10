@@ -45,7 +45,7 @@ class BitcoinTracker(Gtk.Application):
             refresh_button.connect("clicked", self.refresh_data)
 
             donate_button = Gtk.Button(label="Donate")
-            donate_button.connect("clicked", lambda b: webbrowser.open("https://jancordeiro.github.io/donate"))
+            donate_button.connect("clicked", lambda b: webbrowser.open("https://jancordeiro.github.io/simple-bitcoin-tracker/donate.html"))
 
             box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=10, margin_top=15)
 
@@ -67,10 +67,11 @@ class BitcoinTracker(Gtk.Application):
 
             # Info tab
             info_text = (
-                "Simple Bitcoin Tracker\n"
-                "Version: 1.0\n"
-                "Author: Jan Cordeiro\n"
-                "Website: https://jancordeiro.github.io"
+                "🪙 Simple Bitcoin Tracker\n"
+                "📄 Version: 1.0\n"
+                "👨‍💻 Author: Jan Cordeiro\n"
+                "🌐 Website: https://jancordeiro.github.io/simple-bitcoin-tracker\n\n"
+				"This software uses Coingecko API to get updated prices and Freepik's images."
             )
 
             info_label = Gtk.Label(label=info_text)
