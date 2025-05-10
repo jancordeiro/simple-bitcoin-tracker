@@ -100,7 +100,7 @@ class BitcoinTracker:
                 "💾 Version: 1.0\n"
                 "👨‍💻 Author: Jan Cordeiro\n"
                 "🌐 Website: https://jancordeiro.github.io\n\n"
-                "This software uses Coingecko API to get updated prices and Freepik's images."
+                "This app uses Coingecko and Tradingview API to get updated prices and charts. Images from Freepik.com"
                 "</span>"
         )
         info_label = Gtk.Label()
@@ -135,10 +135,10 @@ class BitcoinTracker:
             res = requests.get("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd,eur,brl&include_market_cap=true&include_24hr_change=true")
             data = res.json()["bitcoin"]
             text = (
-                f"USD: ${data['usd']:.2f} ({data['usd_24h_change']:.2f}% 24h)\n"
-                f"EUR: €{data['eur']:.2f} ({data['eur_24h_change']:.2f}% 24h)\n"
-                f"BRL: R${data['brl']:.2f} ({data['brl_24h_change']:.2f}% 24h)\n"
-                f"Market Cap: ${data['usd_market_cap'] / 1e9:.2f} B"
+                f"💵 USD: $ {data['usd']:.2f} ({data['usd_24h_change']:.2f}% 24h)\n"
+                f"💶 EUR: € {data['eur']:.2f} ({data['eur_24h_change']:.2f}% 24h)\n"
+                f"🇧🇷 BRL: R$ {data['brl']:.2f} ({data['brl_24h_change']:.2f}% 24h)\n"
+                f"💰 Market Cap: $ {data['usd_market_cap'] / 1e9:.2f} B"
             )
             self.price_label.set_label(text)
             now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
