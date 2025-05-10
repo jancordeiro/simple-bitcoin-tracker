@@ -1,0 +1,8 @@
+Package: simple-bitcoin-tracker
+Version: 1.0
+Section: utils
+Priority: optional
+Architecture: all
+Depends: gir1.2-gtk-4.0, python3-requests
+Maintainer: Jan Cordeiro <jancordeiro@protonmail.com>
+Description: A simple GTK-based desktop app to track Bitcoin prices in USD, EUR, and BRL. Includes market cap and price variation info.

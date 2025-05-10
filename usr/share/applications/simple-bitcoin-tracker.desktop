@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Simple Bitcoin Tracker
+Comment=Track Bitcoin prices in multiple currencies
+Exec=simple-bitcoin-tracker
+Icon=simple-bitcoin-tracker
+Terminal=false
+Type=Application
+Categories=Utility;Finance;
