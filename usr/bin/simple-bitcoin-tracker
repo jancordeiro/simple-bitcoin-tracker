@@ -1,144 +1,151 @@
 #!/usr/bin/env python3
 
 import gi
-gi.require_version("Gtk", "4.0")
-from gi.repository import Gtk, GLib, Gdk
+gi.require_version("Gtk", "3.0")
+gi.require_version("WebKit2", "4.0")
+
+from gi.repository import Gtk, GLib, WebKit2
 import requests
 from datetime import datetime
 import webbrowser
 
-class BitcoinTracker(Gtk.Application):
+class BitcoinTracker:
     def __init__(self):
-        super().__init__(application_id="org.simple.BitcoinTracker")
-        self.window = None
+        self.window = Gtk.Window(title="Simple Bitcoin Tracker")
+        self.window.set_default_size(550, 550)
+        self.window.connect("destroy", Gtk.main_quit)
 
-    def do_activate(self):
-        if not self.window:
-            self.window = Gtk.ApplicationWindow(application=self)
-            self.window.set_title("Simple Bitcoin Tracker")
-            self.window.set_default_size(550, 500)
+        notebook = Gtk.Notebook()
+        self.window.add(notebook)
 
-            self.apply_css()
+        # ========== Tracker Tab ==========
+        self.price_label = Gtk.Label(label="Fetching data...")
+        self.price_label.set_name("price-label")
+        self.last_update_label = Gtk.Label(label="Last update: —")
 
-            notebook = Gtk.Notebook()
-            self.window.set_child(notebook)
+        refresh_button = Gtk.Button(label="Refresh")
+        refresh_button.connect("clicked", self.refresh_data)
 
-            # Tracker tab
-            self.price_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
-            self.price_box.set_name("price-box")
+        donate_button = Gtk.Button(label="Donate")
+        donate_button.connect("clicked", lambda b: webbrowser.open("https://jancordeiro.github.io/donate"))
 
-            self.labels = {
-                "usd": Gtk.Label(label=""),
-                "eur": Gtk.Label(label=""),
-                "brl": Gtk.Label(label=""),
-                "market_cap": Gtk.Label(label="")
-            }
+        vbox = Gtk.VBox(spacing=10)
+        vbox.set_border_width(15)
 
-            for lbl in self.labels.values():
-                lbl.set_name("price-label")
-                self.price_box.append(lbl)
+        # Banner image
+        banner = Gtk.Image.new_from_file("/usr/share/pixmaps/screen-01.png")
+        banner.set_pixel_size(500)
+        vbox.pack_start(banner, False, False, 0)
 
-            self.last_update_label = Gtk.Label(label="Last update: —")
-            self.last_update_label.set_name("update-label")
+        vbox.pack_start(self.price_label, False, False, 0)
+        vbox.pack_start(self.last_update_label, False, False, 0)
+        vbox.pack_start(refresh_button, False, False, 0)
+        vbox.pack_start(donate_button, False, False, 0)
 
-            refresh_button = Gtk.Button(label="Refresh")
-            refresh_button.connect("clicked", self.refresh_data)
+        scrolled = Gtk.ScrolledWindow()
+        scrolled.add(vbox)
+        notebook.append_page(scrolled, Gtk.Label(label="Tracker"))
 
-            donate_button = Gtk.Button(label="Donate")
-            donate_button.connect("clicked", lambda b: webbrowser.open("https://jancordeiro.github.io/simple-bitcoin-tracker/donate.html"))
+        # ========== Chart Tab ==========
+        chart_html = """
+		<!DOCTYPE html>
+		<html>
+		<head>
+			<meta charset="UTF-8">
+			<style>
+				html, body {
+					margin: 0;
+					padding: 0;
+					height: 100%;
+					width: 100%;
+					background-color: #0f111a;
+				}
+				.tradingview-widget-container {
+					height: 100%;
+					width: 100%;
+				}
+			</style>
+		</head>
+		<body>
+			<div class="tradingview-widget-container">
+				<script type="text/javascript"
+					src="https://s3.tradingview.com/external-embedding/embed-widget-symbol-overview.js"
+					async>
+				{
+				  "symbols": [
+					["Bitcoin / USD", "BINANCE:BTCUSDT"],
+					["Bitcoin / EUR", "BINANCE:BTCEUR"],
+					["Bitcoin / BRL", "BINANCE:BTCBRL"]
+				  ],
+				  "colorTheme": "dark",
+				  "isTransparent": false,
+				  "locale": "en",
+				  "width": "100%",
+				  "height": "100%"
+				}
+				</script>
+			</div>
+		</body>
+		</html>
+		"""
 
-            box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=10, margin_top=15)
+        webview = WebKit2.WebView()
+        webview.load_html(chart_html, "file://")
+        notebook.append_page(webview, Gtk.Label(label="Chart"))
 
-            # Imagem
-            image = Gtk.Picture.new_for_filename("/usr/share/pixmaps/screen-01.png")
-            image.set_content_fit(Gtk.ContentFit.SCALE_DOWN)
-            image.set_size_request(400, 148)
-            box.append(image)
-
-            # Conteúdo da aba Tracker
-            box.append(self.price_box)
-            box.append(self.last_update_label)
-            box.append(refresh_button)
-            box.append(donate_button)
-
-            tab_tracker = Gtk.ScrolledWindow()
-            tab_tracker.set_child(box)
-            notebook.append_page(tab_tracker, Gtk.Label(label="Tracker"))
-
-            # Info tab
-            info_text = (
-                "🪙 Simple Bitcoin Tracker\n"
-                "📄 Version: 1.0\n"
+		# ========== Info Tab ==========
+        info_text = (
+            "<span font='12' foreground='#00FFFF'>"
+                "🚀 <b>Simple Bitcoin Tracker</b>\n\n"
+                "💾 Version: 1.0\n"
                 "👨‍💻 Author: Jan Cordeiro\n"
-                "🌐 Website: https://jancordeiro.github.io/simple-bitcoin-tracker\n\n"
-				"This software uses Coingecko API to get updated prices and Freepik's images."
-            )
+                "🌐 Website: https://jancordeiro.github.io\n\n"
+                "This software uses Coingecko API to get updated prices and Freepik's images."
+                "</span>"
+        )
+        info_label = Gtk.Label()
+        info_label.set_markup(info_text)
+        info_label.set_justify(Gtk.Justification.LEFT)
+        info_label.set_line_wrap(True)
+        info_label.set_margin_top(20)
+        notebook.append_page(info_label, Gtk.Label(label="Info"))
 
-            info_label = Gtk.Label(label=info_text)
-            info_label.set_justify(Gtk.Justification.LEFT)
-            info_label.set_wrap(True)
-            info_label.set_name("info-label")
+        # ========== Apply CSS ==========
+        css_provider = Gtk.CssProvider()
+        css = b"""
+        #price-label {
+            font-size: 16px;
+            color: #39FF14;
+        }
+        GtkWindow {
+            background-color: #0d0d0d;
+        }
+        """
+        css_provider.load_from_data(css)
+        screen = self.window.get_screen()
+        Gtk.StyleContext.add_provider_for_screen(
+            screen, css_provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
+        )
 
-            info_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
-            info_box.set_margin_top(10)
-            info_box.set_margin_bottom(10)
-            info_box.set_margin_start(5)
-            info_box.set_margin_end(5)
-            info_box.append(info_label)
-
-            notebook.append_page(info_box, Gtk.Label(label="Info"))
-
-            self.refresh_data()
-
-        self.window.present()
+        self.refresh_data()
+        self.window.show_all()
 
     def refresh_data(self, *_):
         try:
             res = requests.get("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd,eur,brl&include_market_cap=true&include_24hr_change=true")
             data = res.json()["bitcoin"]
-            self.labels["usd"].set_label(f"USD: ${data['usd']:.2f} ({data['usd_24h_change']:.2f}% 24h)")
-            self.labels["eur"].set_label(f"EUR: €{data['eur']:.2f} ({data['eur_24h_change']:.2f}% 24h)")
-            self.labels["brl"].set_label(f"BRL: R${data['brl']:.2f} ({data['brl_24h_change']:.2f}% 24h)")
-            self.labels["market_cap"].set_label(f"Market Cap: ${data['usd_market_cap'] / 1e9:.2f} B")
+            text = (
+                f"USD: ${data['usd']:.2f} ({data['usd_24h_change']:.2f}% 24h)\n"
+                f"EUR: €{data['eur']:.2f} ({data['eur_24h_change']:.2f}% 24h)\n"
+                f"BRL: R${data['brl']:.2f} ({data['brl_24h_change']:.2f}% 24h)\n"
+                f"Market Cap: ${data['usd_market_cap'] / 1e9:.2f} B"
+            )
+            self.price_label.set_label(text)
             now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             self.last_update_label.set_label(f"Last update: {now}")
         except Exception as e:
-            self.labels["usd"].set_label(f"Error fetching data: {e}")
+            self.price_label.set_label(f"Error fetching data: {e}")
 
-    def apply_css(self):
-        css = b"""
-        window {
-            background-color: #0f0f1a;
-        }
-        #price-label {
-            font-size: 18px;
-            color: #00ffcc;
-        }
-        #update-label {
-            font-size: 12px;
-            color: #8888aa;
-        }
-        button {
-            background: #222244;
-            color: #00ffcc;
-        }
-        button:hover {
-            background: #333366;
-        }
-        #info-label {
-            font-size: 16px;
-            font-family: "Monospace";
-            color: #39ff14;
-            background-color: #1a1a2f;
-            padding: 10px;
-        }
-        """
-
-        css_provider = Gtk.CssProvider()
-        css_provider.load_from_data(css)
-
-        display = Gdk.Display.get_default()
-        Gtk.StyleContext.add_provider_for_display(display, css_provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
-
-app = BitcoinTracker()
-app.run()
+if __name__ == "__main__":
+    app = BitcoinTracker()
+    Gtk.main()
