@@ -12,8 +12,7 @@ A simple desktop app to track the Bitcoin price in USD, EUR and BRL.
 ## Installation
 
 1. Unzip the project files.
-2. Add your custom icon as `simple-bitcoin-tracker.png` to the same folder.
-3. Run the installation script:
+2. Run the installation script:
 
 ```bash
 chmod +x install-simple-bitcoin-tracker.sh
