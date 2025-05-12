@@ -16,7 +16,7 @@ Built with Python and GTK, it’s designed to be simple, clean, and efficient.
 
 ## 🖥️ Screenshots
 
-![Simple Bitcoin Tracker Screenshot](screenshot.png)
+![Simple Bitcoin Tracker Screenshot](screenshot.png) ![Simple Bitcoin Tracker Screenshot](screenshot2.png)
 
 ---
 
