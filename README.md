@@ -24,9 +24,16 @@ Built with Python and GTK, it’s designed to be simple, clean, and efficient.
 
 Before installing, make sure the following dependencies are installed:
 
+- Python 3
+- GTK 3
+- WebKit2GTK
+- Python requests
+
 ```bash
 sudo apt update
-sudo apt install -y python3 python3-gi python3-requests gir1.2-gtk-4.0
+sudo apt install -y gir1.2-gtk-4.0 python3-requests \
+    gir1.2-graphene-1.0 python3-certifi python3-charset-normalizer \
+    python3-idna python3-chardet
 ```
 
 ---
