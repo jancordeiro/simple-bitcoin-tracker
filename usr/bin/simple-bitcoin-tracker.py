@@ -99,7 +99,7 @@ class BitcoinTracker:
                 "🚀 <b>Simple Bitcoin Tracker</b>\n\n"
                 "💾 Version: 1.0\n"
                 "👨‍💻 Author: Jan Cordeiro\n"
-                "🌐 Website: https://jancordeiro.github.io\n\n"
+                "🌐 Website: https://jancordeiro.github.io/simple-bitcoin-tracker\n\n"
                 "This app uses Coingecko and Tradingview API to get updated prices and charts. Images from Freepik.com"
                 "</span>"
         )
